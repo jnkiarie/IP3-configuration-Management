@@ -1,0 +1,54 @@
+version: '3.7'
+
+services:
+ backend:
+  container_name: backend-container
+  image: backend-image:v1.0.0
+  build:
+   context: ./backend
+   dockerfile: Dockerfile
+  ports:
+   - 5000:5000
+  environment:
+   PORT: 5000
+  depends_on:
+   - database
+  networks:
+   - my-network
+
+ client:
+  container_name: client-container
+  image: client-image:v1.0.0
+  build:
+   context: ./client
+   dockerfile: Dockerfile
+
+  ports:
+   - 3000:3000
+  environment:
+   PORT: 3000
+   
+  # volume:
+  #  - mongo-volume
+
+  networks:
+   - my-network
+ 
+ database:
+  container_name: 'mongodb-database'
+  image: mongo
+  environment:
+      - MONGO_INITDB_ROOT_USERNAME=root1
+      - MONGO_INITDB_ROOT_PASSWORD=password
+  ports:
+      - 27018:27018
+  volumes:
+      - mongo-volume:/data/db
+  networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge
+volumes:
+  mongo-volume:
