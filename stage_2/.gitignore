@@ -1,9 +1,10 @@
 # local terraform directories
 **/.terraform/*
-./.terraform*
+*/.terraform*
 # State files
 *.tfstate
 *.tfstate.*
+*../.tfstate
 
 # Crash log files
 *.log

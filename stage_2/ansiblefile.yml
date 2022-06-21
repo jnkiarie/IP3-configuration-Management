@@ -1,0 +1,25 @@
+---
+- name: Week 3 IP3 Configuration Management
+  hosts: all
+  vars:
+      repo_clone_path: /home/IP3
+  roles:
+     - git
+     - docker
+  tasks:
+     - name: Clone repo
+       git:
+         repo: 'https://github.com/jnkiarie/containerization.git'
+         dest: '{{ repo_clone_path }}'
+     - name: Update cache
+       apt:
+         update_cache: yes
+     - name: Ensure Docker Deamon is running
+       service: 
+         name: docker
+         state: started
+       become: true
+     - name: Start application
+       shell: docker-compose -f '{{ repo_clone_path }}/docker-compose.yml' up -d
+       args:
+         executable: /bin/bash
