@@ -2,8 +2,8 @@ locals {
   project_id     = "fluted-ranger-351208"
   network        = "default"
   image          = "debian-cloud/debian-11"
-  ssh_user       = "root@srv001"
-  private_key_path = "/root/.ssh/ansible_ed25519"
+  ssh_user       = "root"
+  private_key_path = "/home/jnkiarie/ansible_ed25519"
 }
 
 #Definition
@@ -62,14 +62,14 @@ provisioner "remote-exec" {
     connection {
       type        = "ssh"
       user        = local.ssh_user
-      # private_key = file(local.private_key_path)
+      private_key = file(local.private_key_path)
       #host        = google_compute_instance.ip3_machines[count.index].network_interface.0.access_config.0.nat_ip
       host        = google_compute_instance.ip3_machines[0].network_interface.0.access_config.0.nat_ip
     }
   }
 
   provisioner "local-exec" {
-    command = "ansible-playbook  -i ${google_compute_instance.ip3_machines[0].network_interface.0.access_config.0.nat_ip}, --private-key ${local.private_key_path} ansible.yml"
+    command = "ansible-playbook  -i ${google_compute_instance.ip3_machines[0].network_interface.0.access_config.0.nat_ip}, ansible.yml"
     }
 
   // Local SSD disk

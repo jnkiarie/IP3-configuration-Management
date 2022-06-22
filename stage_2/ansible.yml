@@ -1,6 +1,7 @@
 ---
 - name: Week 3 IP3 Configuration Management
   hosts: all
+  become: true
   vars:
       repo_clone_path: /home/IP3
   roles:
